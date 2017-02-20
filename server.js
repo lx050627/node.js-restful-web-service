@@ -16,7 +16,6 @@ app.get('/users', function (req, res) {
     myDB.collection("users",function(err,collection)
     {
          getAll(collection,function(da) {
-          console.log(da); 
            res.json(da);
            res.status(200);
            res.end();
@@ -32,7 +31,6 @@ app.get('/users/[a-zA-z]+', function (req, res) {
      var username=(req.path).substring(7);
      MongoClient.connect(STR,function(err,db)
   {
-   //console.log("connect successfully!");
     var myDB=db.db("web");
     var da;
     myDB.collection("users",function(err,collection)
@@ -70,7 +68,6 @@ app.post('/users?', function (req, res) {
       var password=req.query.password;
       var username=req.query.username;
       var created=req.query.created;
-      console.log(username+" "+password+" "+name+" "+created);
       MongoClient.connect(STR,function(err,db)
    {
     console.log("connect successfully!");
@@ -79,7 +76,6 @@ app.post('/users?', function (req, res) {
      getNextID(myDB,"UserID",function(result)
      {
          IDnumber=result;
-         console.log("ID:"+IDnumber);
     var doc={"_id":IDnumber,"Username":username,"Password":password,"Name":name,"Created":created};
     myDB.collection("users",function(err,collection)
         {
@@ -110,7 +106,6 @@ app.put('/users/id=[0-9]+?', function (req, res) {
       var query=JSON.stringify(req.query);
       query=query.replace(/name/,"Name").replace(/username/,"Username").replace(/password/,"Password");
       
-      console.log(query);
       MongoClient.connect(STR,function(err,db)
    {
     console.log("connect successfully!");
@@ -118,7 +113,6 @@ app.put('/users/id=[0-9]+?', function (req, res) {
     myDB.collection("users",function(err,collection)
         {
           var queryid={"_id":Number(id)};
-           console.log(queryid);
           var update={"$set":JSON.parse(query)};
           var options={"upsert":false,"multi":true};
           collection.update(queryid,update,options,function(err,results){
@@ -146,24 +140,16 @@ app.delete('/users/[a-zA-z]+', function (req, res) {
      var username=(req.path).substring(7);
      MongoClient.connect(STR,function(err,db)
   {
-   //console.log("connect successfully!");
     var myDB=db.db("web");
     var da;
     myDB.collection("users",function(err,collection)
     {
          var query={"Username":username};
-         // collection.remove(query,function(err,result){
-         //   res.send("Deletion succeeds");
-         //   res.status(200);
-         //   res.end();
-         //   myDB.close();
-         // });
          collection.findAndRemove(
           query,
           [['_id','asc']],
           {remove:true},
           function(err,doc){
-             //console.log("Message:"+doc.lastErrorObject.n);
              if(!doc.lastErrorObject.n)
              {
                 res.status(404);
