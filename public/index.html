@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>   
+<script type="text/javascript">
+
+
+function Parse(data)
+{
+    $("#parsed").empty();
+    var tabledisplay="<table border='3'><tr><th>ID</th><th>Username</th><th>Name</th><th>Created Time</th></tr>";
+        $.each(data,function(index,value)
+        {
+            tabledisplay+="<tr><td>"+data[index]._id+"</td><td align='center'>"+data[index].Username+"</td><td>"+data[index].Name+"</td><td>"+ConvertTimeFormat(data[index].Created)+"</td></tr>";
+        });
+        tabledisplay+="</table>";
+        $("#parsed").append(tabledisplay);
+
+}
+
+function fetch()
+{
+     $.ajax({
+        url:"http://localhost:8081/Users/",
+        method:'GET',
+        dataType:'json',
+        contentType:"application/json;charset=utf-8",
+        cache:false,
+        success:function(data){
+           Parse(data);
+        },
+        error:function(data){
+           console.log(data);
+        },
+        complete:function(){
+            setTimeout(function(){fetch()},5000);
+        }});
+    
+}
+  
+$(document).ready(fetch());
+
+function ConvertTimeFormat(created)
+{
+    var year=created.substring(0,4);
+    var month=created.substring(4,6);
+    var day=created.substring(6,8);
+    var hour=created.substring(8,10);
+    var minute=created.substring(10,12);
+    var time=year+"-"+month+"-"+day+" "+hour+":"+minute;
+
+    return time;
+}
+
+</script>  
+</head>
+
+ <body>  
+     <h1>User Info</h1> 
+     <div id="parsed"> 
+     </div>
+ </body>  
+ </html>

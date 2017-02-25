@@ -2,11 +2,15 @@ var express = require('express');
 var app = express();
 var MongoClient=require('mongodb').MongoClient;
 var STR='mongodb://localhost:27017/';
+var fs = require('fs');
+
+app.use(express.static('public'));
+
 //get# http://localhost:8081/users/zf
 //post# http://localhost:8081/users?name=lx&password=536321&username=lx&created=201702180000
 //delete# http://localhost:8081/users/zf
 //put# http://localhost:8081/users/id=7?username=lx&password=123456
-app.use(express.static('public'));
+
 app.get('/users', function (req, res) {
    MongoClient.connect(STR,function(err,db)
   {
@@ -54,9 +58,9 @@ app.get('/users/[a-zA-z]+', function (req, res) {
   });
 })
 
-app.get('/', function (req, res) {
-      res.end("Welcome Get!");
-})
+// app.get('/index.html', function (req, res) {
+//     res.sendFile( __dirname + "/" + "index.html" );
+// })
 
 app.post('/', function (req, res) {
       res.end("Welcome Post!");
