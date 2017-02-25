@@ -8,7 +8,7 @@
 function Parse(data)
 {
     $("#parsed").empty();
-    var tabledisplay="<table border='3'><tr><th>ID</th><th>Username</th><th>Name</th><th>Created Time</th></tr>";
+    var tabledisplay="<table border='3'><tr><th>ID</th><th>Username</th><th>Name</th><th>Registration Time</th></tr>";
         $.each(data,function(index,value)
         {
             tabledisplay+="<tr><td>"+data[index]._id+"</td><td align='center'>"+data[index].Username+"</td><td>"+data[index].Name+"</td><td>"+ConvertTimeFormat(data[index].Created)+"</td></tr>";
@@ -59,5 +59,10 @@ function ConvertTimeFormat(created)
      <h1>User Info</h1> 
      <div id="parsed"> 
      </div>
+     <p>
+    Link to Web Service
+    <a href=server.js>
+     server.js</a>
+     </p>
  </body>  
  </html>
