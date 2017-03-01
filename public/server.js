@@ -108,8 +108,8 @@ app.put('/users/id=[0-9]+?', function (req, res) {
       var path=req.path.split("/");
       var id=path[2].substr(3);
       var query=JSON.stringify(req.query);
-      query=query.replace(/name/,"Name").replace(/username/,"Username").replace(/password/,"Password");
-      
+      query=query.replace(/username/g,"Username").replace(/name/g,"Name").replace(/password/g,"Password");
+      query=query.replace(/UserName/g,"Username");
       MongoClient.connect(STR,function(err,db)
    {
     console.log("connect successfully!");
